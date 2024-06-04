@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winding Road</title>
+<style>
+    body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #333;
+    }
+    canvas {
+        border: 1px solid white;
+    }
+</style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="./stir.js"></script>
+</body>
+<script>
+    let font;
+let str = "WINDING ROAD";
+
+function preload() {
+    font = loadFont('DesireLowercase1.otf');
+}
+
+function setup() {
+    createCanvas(800, 800);
+}
+
+function draw() {
+    blendMode(BLEND);
+    background(20);
+    blendMode(ADD);
+
+    const ctx = drawingContext;
+    textAlign(CENTER, CENTER);
+    textFont(font);
+  textSize((height / 15) * 1.5);
+  for (let y = 0; y <= height; y += (height / 15) * 0.9) {
+    let distance = dist(
+        0,
+        y,
+        0,
+      (sin(frameCount / 33) * height) / 4 + (height * 3) / 4
+    );
+    let dist_blur = int(map(distance, 0, (height * 3) / 4, 0, 10));
+    fill(255);
+    ctx.filter = "blur(" + dist_blur + "px)";
+    ctx.letterSpacing =
+      map(sin((y / height) * TWO_PI + frameCount / 33), -1, 1, 0, 40) + "px";
+    ctx.fillText(
+        str,
+      width / 2 + (sin((y / height) * TWO_PI + frameCount / 50) * height) / 2,
+        y + 20
+    );
+    }
+}
+
+</script>
+</html>
